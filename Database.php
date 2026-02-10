@@ -4,19 +4,20 @@
 class Database
 {
     public $connection;
-    public function __construct()
+    public function __construct($config, $username = 'root', $password = 'secret')
     {
-        $dsn = "mysql:host=127.0.0.1;port=3306;dbname=notes;charset=utf8mb4";
-        $user = "root";
-        $pass = "secret";
+        $dsn = 'mysql:' . http_build_query($config, '', ';');
 
-        $this->connection = new PDO($dsn, $user, $pass);
+        $this->connection = new PDO($dsn, $username, $password, [
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        ]);
     }
-    public function query($query)
+
+    public function query($query, $params = [])
     {
         // Prepare to send the query to the DB.
         $statement = $this->connection->prepare($query);
-        $statement->execute();
+        $statement->execute($params);
 
         // Fetch single array
         return $statement;

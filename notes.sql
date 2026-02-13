@@ -1,3 +1,4 @@
+-- Active: 1770985756435@@127.0.0.1@3306@notes
 create database if not exists notes;
 use notes;
 
